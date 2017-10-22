@@ -1,0 +1,23 @@
+body {
+    box-sizing: border-box;
+}
+* {
+	font-family: "Helvetica Neue Bold", Roboto, Helvetica, Arial, sans-serif;
+	font-weight: 700;
+}
+
+header > *{
+	text-align: center;
+	background-color: #ffffaa;
+	vertical-align: center;
+}
+header h1{
+	font-family: "Helvetica Neue Light", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 50px;
+	color: #51453B;
+	padding-top:1em;
+	padding-bottom: 0.5em;
+}
+header{
+	border-bottom: 10px solid powderblue;
+}

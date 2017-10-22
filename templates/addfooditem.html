@@ -1,0 +1,13 @@
+{% extends "main.html" %}
+{% block content %}
+<h2>Add Food Item</h2>
+<form action="#" method="post">
+	<p><label for="name">FoodItem 
+	<input type="text" maxlength="50" name="name" placeholder="enter FoodItem name"></label></p>
+	<p><label for="decription">description</label>
+	<textarea name="description" placeholder="about the dish"></textarea></p>
+	<p><label for="ingredient">Ingredient</label>
+	<textarea name="ingredient" placeholder = "ENTER THE Ingredient SEPERATED BY ','"></textarea></p>
+	<button type="submit">Add Item</button>
+</form>
+{% endblock %}

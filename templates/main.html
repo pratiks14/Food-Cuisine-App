@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Catalog App </title>
+	<!-- <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"> -->
+	<script type="text/javascript" src="{{url_for('static',filename='jquery.min.js')}}"></script>
+</head>
+<body>
+<div class="container">
+	<header class="row">
+	<div class="col-sm-9">
+		<h1>Food App</h1>
+	</div>
+	<div class = "col-sm-3">
+		<img src="{{url_for('static',filename='food.jpg')}}" height="250px" alt="food image" class="img-responsive" >
+	</div>
+	
+	</header>
+	<div class="row top-menu">
+	<div class="col-md-6">
+		<button type="button" class="btn btn-default">
+          <a href="{{url_for('showCuisines')}}"><span class="glyphicon glyphicon-home"></span> Home</a>
+        </button>
+	</div>
+	<div class="col-md-6 text-right">					
+		{%if 'username' not in session %}
+			<button><a href="{{url_for('showLogin')}}">Login </a></button>
+			{% else %}
+			<a href="{{url_for('disconnect')}}">Logout </a>
+			{% endif %}
+		 
+	</div>
+	<div class="section">
+		<div class = 'flash'>
+		      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          
+        <ul>
+        {% for message in messages %}
+            <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+		</div>
+	{%block content%}
+	{%endblock%}
+	</div>
+</div>
+</div>
+</body>
+</html>

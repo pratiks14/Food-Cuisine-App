@@ -1,0 +1,30 @@
+{%extends "main.html"%}
+{% block content %}
+	<section class ="row">
+			<h2>{{foodItem.name}}</h2>
+			<h3>Description</h3>
+			<p>{{foodItem.description}}</p>
+			<h3>Ingredients</h3>
+			<ol>
+			{%for ingred in foodItem.ingredient.split(',')%}
+				<li>{{ingred}}</li>
+			{%endfor%}
+		</ol>
+		<p> by...</p>
+		<p><i>{{creater.name}}</i>
+		{% if user_id and user_id == creater.id %}
+		<span><button><a href="{{url_for('editFoodItem',item_id=foodItem.id)}}">Edit</a></button></span>
+		<span><button onclick="delFunc({{foodItem.id}})">Delete</button></span>
+		{%endif%}
+	</section>
+	<script>
+	function delFunc(item_id)
+	{
+		resp = confirm("Are you sure??");
+		if(resp)
+		{
+			window.location.href = '/deleteitem/'+{{foodItem.cuisine_id}}+'/'+item_id;
+		}
+	}
+</script>
+{% endblock%}

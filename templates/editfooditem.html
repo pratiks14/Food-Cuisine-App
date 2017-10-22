@@ -1,0 +1,13 @@
+{% extends "main.html"%}
+{% block content%}
+	<h3>[Edit] {{foodItem.name}}</h3>
+	<form action="#" method="post">
+		<p><label>name:</label>
+		<input type="text" maxlength = "50" name="name" value="{{foodItem.name}}"></p>
+		<p><label>Description:</label>
+		<textarea name="description" rows="6" cols="100">{{foodItem.description}}</textarea></p>
+		<p><label>Ingredient(seperated by ","):</label>
+		<textarea name="ingredient" cols="100">{{foodItem.ingredient}}</textarea></p>	
+		<button type="submit">Edit It</button>
+	</form>
+{% endblock %}

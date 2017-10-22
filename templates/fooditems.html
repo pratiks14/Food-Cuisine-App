@@ -1,0 +1,13 @@
+{% extends "main.html"%}
+{% block content%}
+<section class="row">
+	<h3>List of Food Item In this Cuisin</h3>
+	<ul>
+		{%for foodItem in foodItems%}
+		<li><a href="{{url_for('itemDetail',cuisine_id=cuisine_id,item_id=foodItem.id)}}">{{foodItem.name}}</a></li>
+		{%endfor%}
+	</ul>
+	<button><a href="{{url_for('addFoodItem',cuisine_id=cuisine_id)}}">Add</a></button>
+</section>
+
+{%endblock%}

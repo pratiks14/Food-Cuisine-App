@@ -1,0 +1,44 @@
+{% extends "main.html" %}
+{%block content%}
+
+<div class="row">
+		<div class="col-md-1"></div>
+		<div class="col-md-11 padding-none">
+			<h1>Cuisines</h1>
+		</div>
+</div>
+{%if user_id%}
+<div class="row padding-top padding-bottom">
+		<div class="col-md-1"></div>
+
+		<div class="col-md-10 padding-none">
+			<a href="{{url_for('addCuisine')}}">
+				<button class="btn btn-default" id="new-restaurant">
+					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Cuisine
+				</button>
+			</a>
+		</div>
+		<div class="col-md-1"></div>
+</div>
+{% endif %}
+	
+	{% for cuisine in cuisines %}
+	<a href="{{url_for('showItems',cuisine_id=cuisine.id)}}">
+			
+						<span><p>{{cuisine.name}}</p></span>
+		</a>
+		{% if user_id and user_id == cuisine.user_id%}
+		<button id="delete" onclick="delFunction({{cuisine.id}})">Delete</button>
+		{% endif %}
+	{% endfor %}
+	<script>
+	function delFunction(id)
+	{
+		var resp = confirm("Are u sure??");
+		if(resp)
+		{
+			window.location.href = "/deletecuisine/"+id;
+		}
+	}
+	</script>
+{%endblock%}
