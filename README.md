@@ -1,4 +1,4 @@
-# udacity-catalog #
+# FoodCusine Catalog #
 
 ## Requirements ##
 
