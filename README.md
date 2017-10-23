@@ -4,7 +4,7 @@
 
 - [Flask](http://flask.pocoo.org)
 - [SQLAlchemy](http://www.sqlalchemy.org)
-- and [Flask](https://pythonhosted.org/Flask
+- and Flask
 
 ##Dependencies ##
 Run the following commands:
