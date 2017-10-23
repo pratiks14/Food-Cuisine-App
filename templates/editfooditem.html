@@ -1,13 +1,23 @@
 {% extends "main.html"%}
 {% block content%}
-	<h3>[Edit] {{foodItem.name}}</h3>
-	<form action="#" method="post">
-		<p><label>name:</label>
-		<input type="text" maxlength = "50" name="name" value="{{foodItem.name}}"></p>
-		<p><label>Description:</label>
-		<textarea name="description" rows="6" cols="100">{{foodItem.description}}</textarea></p>
-		<p><label>Ingredient(seperated by ","):</label>
-		<textarea name="ingredient" cols="100">{{foodItem.ingredient}}</textarea></p>	
-		<button type="submit">Edit It</button>
+<div class="jumbotron">
+	<div class="well well-sm">
+		<h3> {{foodItem.name}}<span class="glyphicon glyphicon-pencil"></span></h3>
+	</div>
+	<form class="well well-sm" action="#" method="post">
+		<div class="form-group">
+			<label>Name:</label>
+			<input type="text" class="form-control" maxlength = "50" name="name" value="{{foodItem.name}}">
+		</div>	
+		<div class="form-group">
+			<label>Description:</label>
+			<textarea class="form-control" name="description" rows="3" >{{foodItem.description}}</textarea>
+		</div>
+		<div class="form-group">	
+			<label>Ingredient(seperated by ","):</label>
+			<textarea  class="form-control" name="ingredient" rows="3" >{{foodItem.ingredient}}</textarea>	
+		</div>
+		<button type="submit" class="btn btn-success btn-lg" >Edit It</button>
 	</form>
+</div>
 {% endblock %}

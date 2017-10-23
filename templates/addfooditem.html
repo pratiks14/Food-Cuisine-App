@@ -1,13 +1,23 @@
 {% extends "main.html" %}
 {% block content %}
-<h2>Add Food Item</h2>
-<form action="#" method="post">
-	<p><label for="name">FoodItem 
-	<input type="text" maxlength="50" name="name" placeholder="enter FoodItem name"></label></p>
-	<p><label for="decription">description</label>
-	<textarea name="description" placeholder="about the dish"></textarea></p>
-	<p><label for="ingredient">Ingredient</label>
-	<textarea name="ingredient" placeholder = "ENTER THE Ingredient SEPERATED BY ','"></textarea></p>
-	<button type="submit">Add Item</button>
-</form>
+<div class="jumbotron">
+	<div class="well well-sm">
+		<h2>Add Food Item</h2>
+	</div>
+	<form class="well well-sm" action="#" method="post">
+		<div class="form-group">
+		    <label >FoodItem:</label>
+		    <input type="text" class="form-control" maxlength="50" name="name" placeholder="FoodItem name">
+		</div>
+		<div class="form-group">
+			<label for="decription">Description:</label>
+			<textarea name="description"  class="form-control" rows="3" placeholder="About the dish"></textarea>
+		</div>
+		<div class="form-group">
+			<label for="ingredient">Ingredient:</label>
+			<textarea class="form-control" name="ingredient" placeholder = "ENTER THE Ingredient SEPERATED BY ','(commas)"></textarea>
+		</div>	
+		<button type="submit" class="btn btn-success btn-lg">Add Item</button>
+	</form>
+</div>	
 {% endblock %}

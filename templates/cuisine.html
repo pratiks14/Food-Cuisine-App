@@ -2,35 +2,38 @@
 {%block content%}
 
 <div class="row">
-		<div class="col-md-1"></div>
-		<div class="col-md-11 padding-none">
-			<h1>Cuisines</h1>
+		<div class="well  well-sm col-md-12 ">
+			<h3><span class="glyphicon glyphicon-cutlery" ></span>Cuisines</h3>
 		</div>
 </div>
 {%if user_id%}
-<div class="row padding-top padding-bottom">
-		<div class="col-md-1"></div>
-
-		<div class="col-md-10 padding-none">
+<div class="row ">
+	<div class="col-md-11 ">
 			<a href="{{url_for('addCuisine')}}">
-				<button class="btn btn-default" id="new-restaurant">
-					<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span>Add Cuisine
+				<button class="btn btn-success btn-lg" id="new-restaurant">
+					Add Cuisine
 				</button>
 			</a>
-		</div>
-		<div class="col-md-1"></div>
+	</div>
+
 </div>
+<br>
 {% endif %}
-	
-	{% for cuisine in cuisines %}
-	<a href="{{url_for('showItems',cuisine_id=cuisine.id)}}">
+	<div class="list-group">
+		{% for cuisine in cuisines %}
+		<div class="list-group-item row">
+			<div class="col-xs-6 ">	
+			<a href="{{url_for('showItems',cuisine_id=cuisine.id)}}">{{cuisine.name}}
+				</a>	
+			</div>
+			{% if user_id and user_id == cuisine.user_id%}
 			
-						<span><p>{{cuisine.name}}</p></span>
-		</a>
-		{% if user_id and user_id == cuisine.user_id%}
-		<button id="delete" onclick="delFunction({{cuisine.id}})">Delete</button>
-		{% endif %}
-	{% endfor %}
+				<span id="delete" class=" glyphicon glyphicon-trash text-right" style="cursor: pointer;" onclick="delFunction({{cuisine.id}})"></span>
+				{% endif%}
+		</div>
+		{% endfor %}
+	</div>
+
 	<script>
 	function delFunction(id)
 	{

@@ -1,20 +1,26 @@
 {%extends "main.html"%}
 {% block content %}
-	<section class ="row">
-			<h2>{{foodItem.name}}</h2>
-			<h3>Description</h3>
+	<section class ="jumbotron">
+		<h2> {{foodItem.name}}</h2>
+		<h3> Description</h3>
+		<div class="well well-sm">
 			<p>{{foodItem.description}}</p>
-			<h3>Ingredients</h3>
+		</div>
+		<h3> Ingredients</h3>
+		<div class="well well-sm">
 			<ol>
-			{%for ingred in foodItem.ingredient.split(',')%}
-				<li>{{ingred}}</li>
-			{%endfor%}
-		</ol>
-		<p> by...</p>
-		<p><i>{{creater.name}}</i>
+				{%for ingred in foodItem.ingredient.split(',')%}
+					<li>{{ingred}}</li>
+				{%endfor%}
+			</ol>
+		</div>	
+		<div class="well well-sm">
+			<p> by...</p>
+			<p><i>{{creater.name}}</i></p>
+		</div>
 		{% if user_id and user_id == creater.id %}
-		<span><button><a href="{{url_for('editFoodItem',item_id=foodItem.id)}}">Edit</a></button></span>
-		<span><button onclick="delFunc({{foodItem.id}})">Delete</button></span>
+		<span><button class="btn btn-success btn-lg"><a href="{{url_for('editFoodItem',item_id=foodItem.id)}}">Edit</a></button></span>
+		<span><button class="btn btn-success btn-lg" onclick="delFunc({{foodItem.id}})">Delete</button></span>
 		{%endif%}
 	</section>
 	<script>

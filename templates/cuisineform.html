@@ -1,10 +1,15 @@
 {% extends "main.html"%}
 {%block content%}
-<h3>Add New Cuisine</h3>
-<form action="#" method="post">
-	<label for="name">Cuisine Name</label>
-	<input type="text" maxlength="50" name="name" placeholder="enter cuisine name">
-	<button type="submit">Add</button>
-</form>
-
+<div class="jumbotron">
+	<div class="well well-sm">
+		<h3>Add New Cuisine</h3>
+	</div>
+	<form class ="well well-sm" action="#" method="post">
+		<div class="input-group input-group-lg">
+			<span class="input-group-addon">Cuisine Name</span>
+			<input type="text" maxlength="50" name="name" placeholder="Cuisine name" name="email" class="form-control" maxlength="50">
+		</div><br>
+		<button type="submit" class="btn btn-success btn-lg">Add</button>
+	</form>
+</div>
 {%endblock%}

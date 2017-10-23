@@ -1,36 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-	 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
-  </script>
-<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='bootstrap.css')}}">
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  
 <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
 <script src="//apis.google.com/js/platform.js?onload=start"> </script>
 </head>
 <body>
+	<div class="container">
 	<!-- GOOGLE PLUS SIGN IN BUTTON-->
-	
-          <div id="signInButton">
-          <span class="g-signin"
-            data-scope="openid email"
-            data-clientid="192682633442-ii5jher0k36nrq1dq4e9bgpo1qaj96o5.apps.googleusercontent.com"
-            data-redirecturi="postmessage"
-            data-accesstype="offline" 
-            data-cookiepolicy="single_host_origin"
-            data-callback="signInCallback"
-            data-approvalprompt="force">
-          </span>
-        </div>
+	<div class="jumbotron jumbotron-sm">
+	<div class="well well-sm text-center">
+		<h4>Sign in With google</h4>
+    <div id="signInButton" >
+      <span class="g-signin"
+        data-scope="openid email"
+        data-clientid="192682633442-ii5jher0k36nrq1dq4e9bgpo1qaj96o5.apps.googleusercontent.com"
+        data-redirecturi="postmessage"
+        data-accesstype="offline" 
+        data-cookiepolicy="single_host_origin"
+        data-callback="signInCallback"
+        data-approvalprompt="force">
+      </span>
+  </div>
+    </div>
 <!-- offline =access user even whe n the user is offline -->
 
-<div id="result"></div>
+<section class= "default well well-sm">
+	<div class="jumbotron text-center">
+	<div class="btn-group btn-group-lg text-center" >
+	<button class="btn btn-primary btn-lg"  id="login-btn">Login</button>
+	<button class="btn btn-primary"  id ="Signup-btn">SignUp</button>
+	</div>
+	</div>
+	<br>
+	<div id="login" class="well well-sm">
+	<form name="Login" id="loginform" action="" method="post"> 
+		<div class="input-group input-group-lg">
+			<span class="input-group-addon">username</span>
+			<input type="text" name="email" class="form-control" maxlength="50" >
+		</div><br>
+		<div class="input-group input-group-lg">
+			<span class="input-group-addon">password </span>
+			<input type="password" name="password" class="form-control" maxlength="50" autocomplete="false">
+		</div><br>	
+		<p><button class="btn btn-submit btn-lg" type="submit">Login</button></p>	
+	</form>
+	</div>
+	<div id="Signup" class="well well-sm">
+	<form id="ajaxform" action="" method = "post">
+		<div class="input-group input-group-lg">
+			<span class="input-group-addon">username</span>
+			<input type="text" name="email" class="form-control" maxlength="50">
+		</div><br>	
+		<div class="input-group input-group-lg">
+			<span class="input-group-addon">FullName</span>
+			<input type="text" name="username"  class="form-control" maxlength="50" >
+		</div><br>	
+		<div class="input-group input-group-lg">
+			<span class="input-group-addon">password</span>
+			<input type="password" name="password" class="form-control" maxlength="50" autocomplete="false">
+		</div><br>
+		<p><input class="btn btn-submit btn-lg" type="submit" name="button" value="Sign Up"></p>
+	</form>
+	</div>
+</section>
+</div>
+
+</div>
+<div id="result" ></div>
+
 <script>
+window.onload=function(){
+		$('#login').show();
+		$('#Signup').hide();
+		
+	};
+	
 	function signInCallback(authResult){
 		if(authResult['code']){
 			//hide sign in button now that the user is authorized
-			$('#signInButton').attr('style','display:none');
+			$('.container').hide();
 			//send the one time use code to the server if the server responds write a login successfull message and return back to the FoodApp page
-			window.console.log(authResult['code'])
 			$.ajax({
 				type : 'POST',
 				url : '/gconnect?state={{STATE}}',
@@ -51,44 +104,24 @@
 					else{
 						$('#result').html('Failed to make a server-side call.Check your configuration and console ');
 					}
+				},
+				statusCode:{
+					401:function(){
+						alert("Please Try again!");
+					},
+					500:function(){
+						alert("Error:Try again");
+					}
 				}
 			});
 		}	
 	}
 	
 </script>
-
-<section class= "default">
-	<p><button id="login-btn">Login</button><button id ="Signup-btn">SignUp</button></p>
-	</hr>
-	<div id="login">
-	<form name="Login" id="loginform" action="" method="post"> 
-		<p><label>username : </label></p>
-			<input type="text" name="email" maxlength="50" name>
-		<p><label>password : </label></p>
-		<input type="password" name="password" >
-		<p><button type="submit">Login</button></p>	
-	</form>
-	</div>
-	<div id="Signup">
-	<form id="ajaxform" action="/signup?state={{STATE}}" method = "post">
-		<p><label>username : </label></p>
-			<input type="text" name="email" maxlength="50">
-		<p>Name</p>
-		<input type="text" name="username" maxlength="50">	
-		<p><label>password : </label></p>
-		<input type="password" name="password" >
-
-		<p><input type="submit" name="button" value="Sign Up"></p>
-	</form>
-	</div>
-</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
-	(function(){
-		$('#login').show();
-		$('#Signup').hide();
-		
-	})();
+	
 	$('#login-btn').click(function(){
 			$('#login').show();
 			$('#Signup').hide();
@@ -111,7 +144,6 @@
 	}
 	$('#loginform').submit(function(event)
 	{
-		$('#signInButton').attr('style','display:none');
 		event.preventDefault();
 		if(checkInputs($("#loginform :input[type=text]")))
 		{
@@ -133,8 +165,7 @@
 			{
 				if(result)
 				{
-					$('#Signup').hide();
-					$('#login').hide();
+					$(".container").hide();
 					$('#result').html("Sign up successfull!!<br>"+result+"redirecting..");
 					
 					setTimeout(function(){
@@ -145,12 +176,20 @@
 				{
 					$('#result').html("Invalid Credentials!!");
 				}
+			},
+			statusCode: {
+				401: function() {
+
+				  alert("login Unsuccessfull!!");
+				},
+				404:function(){
+					alert("Invalid Credentials!!");
+				}
 			}
 		});
 	});	
 	$('#ajaxform').submit(function(event)
 	{
-		$('#signInButton').attr('style','display:none');
 		event.preventDefault();
 		
 		if (checkInputs($("#ajaxform :input[type=text]")))
@@ -173,9 +212,8 @@
 			success:function(result)
 			{
 				if(result)
-				{
-					$('#Signup').hide();
-					$('#login').hide();
+				{	
+					$('.container').hide();
 					$('#result').html("Sign up successfull!!<br>"+result+"redirecting..");
 					
 					setTimeout(function(){
@@ -186,10 +224,17 @@
 				{
 					$('#result').html("Please Try Again!!");
 				}
+			},
+			statusCode:{
+				401:function(){
+					alert("Error:Please try Again! ");
+				},
+				404:function(){
+					alert("Username is already Present");
+				}
 			}
 		});
 	});	
 </script>
-
 </body>
 </html>

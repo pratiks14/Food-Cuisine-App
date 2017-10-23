@@ -1,56 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Catalog App </title>
-	<!-- <link rel=stylesheet type=text/css href="{{ url_for('static', filename='bootstrap.min.css') }}">
-	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}"> -->
-	<script type="text/javascript" src="{{url_for('static',filename='jquery.min.js')}}"></script>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  
+<link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
+<style type="text/css">
+.container-fluid
+{
+	background-image: url('{{url_for('static',filename='backimage.jpg')}}');
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 100%;
+	min-height:100vh;
+}
+h1,h3,h4,h2,h5
+{
+	text-decoration: underline;
+	text-transform: uppercase;
+}
+
+</style>
 </head>
 <body>
-<div class="container">
-	<header class="row">
-	<div class="col-sm-9">
-		<h1>Food App</h1>
+<div class="container-fluid" style="">
+	<div class="well well-sm row" style="background-color: gray">
+		<div class="col-md-11 col-sm-10 col-xs-8">
+			<h1 class="text-center"><span class="glyphicon glyphicon-cutlery"></span>FoodCuisine App</h1>
+		</div>
+		<div class="col-md-1 col-sm-2 col-xs-4">	
+			<img src="{{url_for('static',filename='food.jpg')}}"  alt="food image" class="img-responsive img-circle img-thumbnail" >
+		</div>	
 	</div>
-	<div class = "col-sm-3">
-		<img src="{{url_for('static',filename='food.jpg')}}" height="250px" alt="food image" class="img-responsive" >
-	</div>
-	
-	</header>
 	<div class="row top-menu">
-	<div class="col-md-6">
-		<button type="button" class="btn btn-default">
-          <a href="{{url_for('showCuisines')}}"><span class="glyphicon glyphicon-home"></span> Home</a>
-        </button>
-	</div>
-	<div class="col-md-6 text-right">					
+		<div class="col-xs-6" >
+			<button type="button" class="btn btn-default btn-lg">
+	          <a href="{{url_for('showCuisines')}}"><span class="glyphicon glyphicon-home"></span> Home</a>
+	        </button>
+		</div>
+		<div class="col-xs-6  text-right">	
 		{%if 'username' not in session %}
-			<button><a href="{{url_for('showLogin')}}">Login </a></button>
+
+				<button type="button" class="btn btn-default btn-lg"><a href="{{url_for('showLogin')}}">Login </a></button>
 			{% else %}
-			<a href="{{url_for('disconnect')}}">Logout </a>
-			{% endif %}
+				<!-- <img src="{{session['picture']}}" class="img-responsive img-circle"> -->
+			<button type="button" class="btn btn-default btn-lg"><a href="{{url_for('disconnect')}}">Logout </a>
+			{% endif %}</button>
 		 
+		</div>
 	</div>
-	<div class="section">
-		<div class = 'flash'>
-		      {% with messages = get_flashed_messages() %}
+	<br>
+	{%if 'username'  in session %}
+	<br>
+	<div class="row">
+		<div class="col-xs-2 col-md-1">
+			<img src="{{session['picture']}}" class="img-responsive img-circle">
+		</div>
+		<div class="col-xs-10 col-md-11">
+		</div>
+	</div>
+	<br>
+	{% endif%}
+	{% with messages = get_flashed_messages() %}
+      
       {% if messages %}
-          
-        <ul>
+    <div class="well well-sm">
+		Messages
+	</div>
+        <ul class="list-group">
         {% for message in messages %}
-            <li> <strong> {{ message }} </strong> </li>
+            <li class="list-group-item list-group-item-info"> <strong> {{ message }} </strong> </li>
         {% endfor %}
         </ul>
         {% endif %}
     {% endwith %}
 
-		</div>
+	<br>	
 	{%block content%}
 	{%endblock%}
-	</div>
 </div>
-</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </body>
 </html>
