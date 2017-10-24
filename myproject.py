@@ -35,6 +35,8 @@ def showLogin():
     login_session['state'] = state
     return render_template('login.html', STATE=state)
 
+# this function is called for default signup through the app
+
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -72,6 +74,8 @@ def signup():
     flash("you are now logged in as %s" % login_session['username'])
     return output
 
+# This is called when user logs in throgh the app not google
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -90,7 +94,7 @@ def login():
                                  ('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
-
+# user is validated by checking whether the email id is present in userdb
     if validateUser(email, password):
         user_id = getUserID(email)
         user = getUserInfo(user_id)
@@ -118,9 +122,12 @@ def login():
         response.headers['content-type'] = 'application/json'
         return response
 
+# this is server side authentication through google
+
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    # this is used to check whether the client the one authorizing
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps
                                  ('Invalid state parameter'), 401)
@@ -207,6 +214,8 @@ def gconnect():
     flash("you are now logged in as %s" % login_session['username'])
     return output
 
+# user details is saved into the database
+
 
 def createUser(login_session):
     if login_session['provider'] == 'default':
@@ -246,6 +255,9 @@ def validateUser(email, password):
         return True
     return False
 
+# this is function is called both the user to disconect through google
+# and through the app
+
 
 @app.route('/disconnect')
 def disconnect():
@@ -259,7 +271,7 @@ def disconnect():
             return redirect(url_for('showCuisines'))
 
         else:
-            # return none instead of an err if key not present
+            # For google disconnection.
             access_token = login_session.get('access_token')
             if access_token is None:
                 response = make_response(json.dumps
@@ -288,7 +300,7 @@ def disconnect():
         return redirect(url_for('showCuisines'))
 
 
-# JSON APIs to view Restaurant Information
+# JSON APIs to view cusines Information
 @app.route('/cuisine/<int:cuisine_id>/item/JSON')
 def cuisineItemJSON(cuisine_id):
     foodItems = session.query(FoodItem).filter_by(
@@ -307,6 +319,8 @@ def cuisinesJSON():
     cuisines = session.query(Cuisine).all()
     return jsonify(cuisines=[x.serialize for x in cuisines])
 
+# The starting page
+
 
 @app.route('/')
 @app.route('/cuisines')
@@ -317,6 +331,8 @@ def showCuisines():
         flash("User Must login")
     return render_template('cuisine.html', cuisines=cuisines,
                            user_id=user_id)
+
+# items belonging to particular cuisine
 
 
 @app.route('/fooditem/<int:cuisine_id>')
@@ -358,6 +374,8 @@ def deleteCuisine(cuisine_id):
     flash("its deleted!! to add again click on add")
     return redirect(url_for('showCuisines'))
 
+# item details belonging to particular cuisine.
+
 
 @app.route('/item/<int:cuisine_id>/<int:item_id>')
 def itemDetail(cuisine_id, item_id):
@@ -369,6 +387,7 @@ def itemDetail(cuisine_id, item_id):
                            foodItem=foodItem)
 
 
+# generated a form to add an item
 @app.route('/additem/<int:cuisine_id>', methods=['GET', 'POST'])
 def addFoodItem(cuisine_id):
     user_id = getUserID(login_session.get('email'))
@@ -389,6 +408,7 @@ def addFoodItem(cuisine_id):
         return render_template('addfooditem.html')
 
 
+# functionality to delete item if the item was ccreated by the user.
 @app.route('/deleteitem/<int:cuisine_id>/<int:item_id>')
 def deleteFoodItem(cuisine_id, item_id):
     user_id = getUserID(login_session.get('email'))
@@ -402,6 +422,7 @@ def deleteFoodItem(cuisine_id, item_id):
     return redirect(url_for('showItems', cuisine_id=cuisine_id))
 
 
+# edited item if the item was created by the user.
 @app.route('/edititem/<int:item_id>', methods=['GET', 'POST'])
 def editFoodItem(item_id):
     foodItem = session.query(FoodItem).filter_by(id=item_id).one()
@@ -424,3 +445,4 @@ if __name__ == '__main__':
     app.secret_key = "my_app_secretkey"
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
+# item configured to open on port 5000

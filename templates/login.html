@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  
+
 <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
 <script src="//apis.google.com/js/platform.js?onload=start"> </script>
 </head>
@@ -19,7 +19,7 @@
         data-scope="openid email"
         data-clientid="192682633442-ii5jher0k36nrq1dq4e9bgpo1qaj96o5.apps.googleusercontent.com"
         data-redirecturi="postmessage"
-        data-accesstype="offline" 
+        data-accesstype="offline"
         data-cookiepolicy="single_host_origin"
         data-callback="signInCallback"
         data-approvalprompt="force">
@@ -37,7 +37,7 @@
 	</div>
 	<br>
 	<div id="login" class="well well-sm">
-	<form name="Login" id="loginform" action="" method="post"> 
+	<form name="Login" id="loginform" action="" method="post">
 		<div class="input-group input-group-lg">
 			<span class="input-group-addon">username</span>
 			<input type="text" name="email" class="form-control" maxlength="50" >
@@ -45,8 +45,8 @@
 		<div class="input-group input-group-lg">
 			<span class="input-group-addon">password </span>
 			<input type="password" name="password" class="form-control" maxlength="50" autocomplete="false">
-		</div><br>	
-		<p><button class="btn btn-submit btn-lg" type="submit">Login</button></p>	
+		</div><br>
+		<p><button class="btn btn-submit btn-lg" type="submit">Login</button></p>
 	</form>
 	</div>
 	<div id="Signup" class="well well-sm">
@@ -54,11 +54,11 @@
 		<div class="input-group input-group-lg">
 			<span class="input-group-addon">username</span>
 			<input type="text" name="email" class="form-control" maxlength="50">
-		</div><br>	
+		</div><br>
 		<div class="input-group input-group-lg">
 			<span class="input-group-addon">FullName</span>
 			<input type="text" name="username"  class="form-control" maxlength="50" >
-		</div><br>	
+		</div><br>
 		<div class="input-group input-group-lg">
 			<span class="input-group-addon">password</span>
 			<input type="password" name="password" class="form-control" maxlength="50" autocomplete="false">
@@ -76,9 +76,9 @@
 window.onload=function(){
 		$('#login').show();
 		$('#Signup').hide();
-		
+
 	};
-	
+	// google callback function
 	function signInCallback(authResult){
 		if(authResult['code']){
 			//hide sign in button now that the user is authorized
@@ -114,14 +114,14 @@ window.onload=function(){
 					}
 				}
 			});
-		}	
+		}
 	}
-	
+
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
-	
+
 	$('#login-btn').click(function(){
 			$('#login').show();
 			$('#Signup').hide();
@@ -134,14 +134,16 @@ window.onload=function(){
 	function checkInputs(input) {
 		var flag = false;
 	    input.each(function(){
-	        var input = $(this); 
+	        var input = $(this);
 	        if( $.trim(input.val()) === '' ) {
 	        	console.log($.trim(input.val()) === '');
 	 	            flag = true;
-	        } 
+	        }
 	    });
-	    return flag;	
+	    return flag;
 	}
+
+	// login ajax request
 	$('#loginform').submit(function(event)
 	{
 		event.preventDefault();
@@ -167,7 +169,7 @@ window.onload=function(){
 				{
 					$(".container").hide();
 					$('#result').html("Sign up successfull!!<br>"+result+"redirecting..");
-					
+
 					setTimeout(function(){
 							window.location.href = "/cuisines";
 						},2000);
@@ -187,11 +189,13 @@ window.onload=function(){
 				}
 			}
 		});
-	});	
+	});
+
+	// singup ajax request
 	$('#ajaxform').submit(function(event)
 	{
 		event.preventDefault();
-		
+
 		if (checkInputs($("#ajaxform :input[type=text]")))
 		{
 			alert("Fill all th inputs!!");
@@ -212,10 +216,10 @@ window.onload=function(){
 			success:function(result)
 			{
 				if(result)
-				{	
+				{
 					$('.container').hide();
 					$('#result').html("Sign up successfull!!<br>"+result+"redirecting..");
-					
+
 					setTimeout(function(){
 							window.location.href = "/cuisines";
 						},2000);
@@ -234,7 +238,7 @@ window.onload=function(){
 				}
 			}
 		});
-	});	
+	});
 </script>
 </body>
 </html>
