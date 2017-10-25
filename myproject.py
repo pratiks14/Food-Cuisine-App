@@ -24,8 +24,8 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-CLIENT_ID = json.loads
-(open('client_secrets.json', 'r').read())['web']['client_id']
+CLIENT_ID = json.loads(open
+                       ('client_secrets.json', 'r').read())['web']['client_id']
 
 
 @app.route('/login')
@@ -147,11 +147,12 @@ def gconnect():
         return response
     # check that the access token is valid
     access_token = credentials.access_token
-    url = '''https://www.googleapis.com/oauth2/v1/
-        tokeninfo?access_token=%s''' % access_token
-
+    url = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='
+    url += access_token
+    print url
     h = httplib2.Http()
     response = h.request(url, 'GET')[1]
+    # print response
     str_response = response.decode('utf-8')
     result = json.loads(str_response)
 
@@ -349,7 +350,6 @@ def showItems(cuisine_id):
 def addCuisine():
     user_id = getUserID(login_session.get('email'))
     if not user_id:
-        flash("User Must login")
         return redirect(url_for('showCuisines'))
     if request.method == 'POST':
         user_id = getUserID(login_session['email'])
@@ -362,17 +362,25 @@ def addCuisine():
         return render_template('cuisineform.html')
 
 
-@app.route('/deletecuisine/<int:cuisine_id>')
-def deleteCuisine(cuisine_id):
+@app.route('/deletecuisine', methods=['POST'])
+def deleteCuisine():
+    params = json.loads(request.data)
+    cuisine_id = params['cuisine_id']
     user_id = getUserID(login_session.get('email'))
     if not user_id:
-        flash("User Must login")
-        return redirect(url_for('showCuisines'))
+        response = make_response(json.dumps("User not logged in!!"), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
     delcuisine = session.query(Cuisine).filter_by(id=cuisine_id).one()
+    if user_id != delcuisine.user_id:
+        response = make_response(json.dumps("You are not authorized"), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
     session.delete(delcuisine)
     session.commit()
-    flash("its deleted!! to add again click on add")
-    return redirect(url_for('showCuisines'))
+    response = make_response(json.dumps('Cuisine Deleted!'), 200)
+    response.headers['Content-Type'] = 'application/json'
+    return response
 
 # item details belonging to particular cuisine.
 
@@ -392,7 +400,6 @@ def itemDetail(cuisine_id, item_id):
 def addFoodItem(cuisine_id):
     user_id = getUserID(login_session.get('email'))
     if not user_id:
-        flash("User Must login")
         return redirect(url_for('showItems', cuisine_id=cuisine_id))
     if request.method == 'POST':
         foodItem = FoodItem(user_id=user_id,
@@ -409,17 +416,23 @@ def addFoodItem(cuisine_id):
 
 
 # functionality to delete item if the item was ccreated by the user.
-@app.route('/deleteitem/<int:cuisine_id>/<int:item_id>')
-def deleteFoodItem(cuisine_id, item_id):
+@app.route('/deleteitem', methods=['POST'])
+def deleteFoodItem():
     user_id = getUserID(login_session.get('email'))
+    params = json.loads(request.data)
+    item_id = params['item_id']
     if not user_id:
-        flash("User Must login")
-        return redirect(url_for('showItems', cuisine_id=cuisine_id))
+        response = make_response("not logged In", 401)
+        return response
     delItem = session.query(FoodItem).filter_by(id=item_id).one()
-    session.delete(delItem)
-    session.commit()
-    flash("Food Item deleted")
-    return redirect(url_for('showItems', cuisine_id=cuisine_id))
+    if user_id is delItem.user_id:
+        session.delete(delItem)
+        session.commit()
+        response = make_response("Item Deleted!!", 200)
+        return response
+    else:
+        response = make_response("Not authorized!!", 401)
+        return response
 
 
 # edited item if the item was created by the user.
@@ -428,8 +441,10 @@ def editFoodItem(item_id):
     foodItem = session.query(FoodItem).filter_by(id=item_id).one()
     user_id = getUserID(login_session.get('email'))
     if not user_id:
-        flash("User Must login")
-        return redirect(url_for('showItems', cuisine_id=foodItem.cuisine_id))
+        response = make_response("Not logged In", 401)
+        response.headers['content-type'] = "application/json"
+        return response
+
     if request.method == 'POST':
         foodItem.description = request.form['description']
         foodItem.name = request.form['name']
@@ -438,7 +453,20 @@ def editFoodItem(item_id):
         flash("The food Item is Edited!!")
         return redirect(url_for('showItems', cuisine_id=foodItem.cuisine_id))
     else:
-        return render_template('editfooditem.html', foodItem=foodItem)
+        if user_id is foodItem.user_id:
+            response = make_response("Authorized to Edit", 200)
+            return response
+        else:
+            response = make_response('Unauthorized', 401)
+            response.headers['content-type'] = 'application/json'
+            return response
+
+
+@app.route('/edititemform/<int:item_id>')
+def generateEditForm(item_id):
+    print "hello!!"
+    foodItem = session.query(FoodItem).filter_by(id=item_id).one()
+    return render_template('editfooditem.html', foodItem=foodItem)
 
 
 if __name__ == '__main__':

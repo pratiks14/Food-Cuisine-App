@@ -5,12 +5,13 @@
 	<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='style.css')}}">
 <style type="text/css">
 .container-fluid
 {
-	background-image: url('{{url_for('static',filename='backimage.jpg')}}');
+	background-image: url('{{url_for('static',filename='image2.jpg')}}');
 	background-repeat: no-repeat;
 	background-size: cover;
 	height: 100%;
@@ -18,21 +19,30 @@
 }
 h1,h3,h4,h2,h5
 {
-	text-decoration: underline;
 	text-transform: uppercase;
+	font-family: 'Indie Flower',cursive;
+}
+.well,.well-sm
+{
+	background-color: #e2dddd;
+}
+#creater-name
+{
+	text-transform: uppercase;
+	font-family: 'Indie Flower',cursive;
 }
 
 </style>
 </head>
 <body>
 <div class="container-fluid" style="">
-	<div class="well well-sm row" style="background-color: gray">
+	<div class="well well-sm row">
 		<div class="col-md-11 col-sm-10 col-xs-8">
 			<h1 class="text-center"><span class="glyphicon glyphicon-cutlery"></span>FoodCuisine App</h1>
 		</div>
-		<div class="col-md-1 col-sm-2 col-xs-4">	
+		<div class="col-md-1 col-sm-2 col-xs-4">
 			<img src="{{url_for('static',filename='food.jpg')}}"  alt="food image" class="img-responsive img-circle img-thumbnail" >
-		</div>	
+		</div>
 	</div>
 	<div class="row top-menu">
 		<div class="col-xs-6" >
@@ -40,7 +50,7 @@ h1,h3,h4,h2,h5
 	          <a href="{{url_for('showCuisines')}}"><span class="glyphicon glyphicon-home"></span> Home</a>
 	        </button>
 		</div>
-		<div class="col-xs-6  text-right">	
+		<div class="col-xs-6  text-right">
 		{%if 'username' not in session %}
 
 				<button type="button" class="btn btn-default btn-lg"><a href="{{url_for('showLogin')}}">Login </a></button>
@@ -48,7 +58,7 @@ h1,h3,h4,h2,h5
 				<!-- <img src="{{session['picture']}}" class="img-responsive img-circle"> -->
 			<button type="button" class="btn btn-default btn-lg"><a href="{{url_for('disconnect')}}">Logout </a>
 			{% endif %}</button>
-		 
+
 		</div>
 	</div>
 	<br>
@@ -64,7 +74,7 @@ h1,h3,h4,h2,h5
 	<br>
 	{% endif%}
 	{% with messages = get_flashed_messages() %}
-      
+
       {% if messages %}
     <div class="well well-sm">
 		Messages
@@ -77,7 +87,7 @@ h1,h3,h4,h2,h5
         {% endif %}
     {% endwith %}
 
-	<br>	
+	<br>
 	{%block content%}
 	{%endblock%}
 </div>

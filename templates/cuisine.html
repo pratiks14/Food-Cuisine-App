@@ -6,7 +6,6 @@
 			<h3><span class="glyphicon glyphicon-cutlery" ></span>Cuisines</h3>
 		</div>
 </div>
-{%if user_id%}
 <div class="row ">
 	<div class="col-md-11 ">
 			<a href="{{url_for('addCuisine')}}">
@@ -18,18 +17,16 @@
 
 </div>
 <br>
-{% endif %}
 	<div class="list-group">
 		{% for cuisine in cuisines %}
 		<div class="list-group-item row">
-			<div class="col-xs-6 ">	
+			<div class="col-xs-6 ">
 			<a href="{{url_for('showItems',cuisine_id=cuisine.id)}}">{{cuisine.name}}
-				</a>	
+				</a>
 			</div>
-			{% if user_id and user_id == cuisine.user_id%}
-			
-				<span id="delete" class=" glyphicon glyphicon-trash text-right" style="cursor: pointer;" onclick="delFunction({{cuisine.id}})"></span>
-				{% endif%}
+
+			<span id="delete" class=" glyphicon glyphicon-trash text-right" style="cursor: pointer;" onclick="delFunction({{cuisine.id}})"></span>
+
 		</div>
 		{% endfor %}
 	</div>
@@ -40,7 +37,25 @@
 		var resp = confirm("Are u sure??");
 		if(resp)
 		{
-			window.location.href = "/deletecuisine/"+id;
+			var data ={};
+			data['cuisine_id'] = id;
+			$.ajax({
+				type:'POST',
+				url:'/deletecuisine',
+				processData:false,
+				data:JSON.stringify(data),
+				contentType: 'application/ajax; charset=utf-8',
+				success:function(result){
+					alert(result);
+					location.reload(true);
+				},
+				statusCode:{
+					401: function(){
+						alert("you are not authorized!!");
+						location.reload();
+					}
+				}
+			});
 		}
 	}
 	</script>

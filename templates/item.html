@@ -13,23 +13,56 @@
 					<li>{{ingred}}</li>
 				{%endfor%}
 			</ol>
-		</div>	
+		</div>
 		<div class="well well-sm">
 			<p> by...</p>
-			<p><i>{{creater.name}}</i></p>
+			<p id="creater-name">{{creater.name}}</p>
 		</div>
-		{% if user_id and user_id == creater.id %}
-		<span><button class="btn btn-success btn-lg"><a href="{{url_for('editFoodItem',item_id=foodItem.id)}}">Edit</a></button></span>
+		<span><button class="btn btn-success btn-lg" onclick="editFunc({{foodItem.id}})">Edit</button></span>
 		<span><button class="btn btn-success btn-lg" onclick="delFunc({{foodItem.id}})">Delete</button></span>
-		{%endif%}
 	</section>
 	<script>
+	function editFunc(item_id)
+	{
+		$.ajax({
+			url:'/edititem/'+item_id,
+			contentType: 'application/ajax; charset=utf-8',
+			success:function(result){
+				window.location.href = '/edititemform/'+item_id;
+			},
+			statusCode:{
+				401:function(){
+					alert(" You are Unauthorized!!");
+					location.reload(true);
+				}
+			}
+		});
+	}
 	function delFunc(item_id)
 	{
 		resp = confirm("Are you sure??");
 		if(resp)
 		{
-			window.location.href = '/deleteitem/'+{{foodItem.cuisine_id}}+'/'+item_id;
+			data = {};
+			data['item_id'] = item_id;
+			$.ajax({
+				type:'POST',
+				url:'/deleteitem',
+				data:JSON.stringify(data),
+				processData:false,
+				contentType:"application/json",
+				success:function()
+				{
+					alert("Item Deleted");
+					location.href = '/fooditem/{{foodItem.cuisine_id}}';
+				},
+				statusCode:{
+					401:function(){
+						alert("You are Not authorized!!");
+						location.reload(true);
+					}
+				}
+			});
 		}
 	}
 </script>
