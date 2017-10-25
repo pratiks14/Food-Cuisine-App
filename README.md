@@ -6,7 +6,7 @@
 - [SQLAlchemy](http://www.sqlalchemy.org)
 - and Flask
 
-##Dependencies ##
+## Dependencies ##
 Run the following commands:
 
     pip2 install flask packaging oauth2client redis passlib flask-httpauth
